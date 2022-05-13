@@ -1,0 +1,10 @@
+//new2
+7 _typeofHookMonky
+7 _allocMemory !="_allocMemory2087"
+7 _d3d9multipliervariable
+7 _runASM
+7 _addGFX_hookD3D9eventhandler
+7 _BEhookBYPASSBOB
+7 "!(isNil \"FN_infiSTAR_C\")"
+7 "Ammo Activated"
+7 "     +             "

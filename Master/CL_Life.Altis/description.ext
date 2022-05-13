@@ -1,0 +1,358 @@
+#include "infiSTAR_AdminMenu.hpp"
+
+//--- Control Chat - Format: {channelID<number>, disableChat<bool>, disableVoice<bool>}
+disableChannels[] = {
+	{0, true, true}, //--- Global Chat
+	{1, false, true}, //--- Side Chat
+	{2, true, true}, //--- Command Chat
+	{3, false, false}, //--- Group Chat
+	{4, false, false}, //--- Vehicle Chat
+	{5, false, false}, //--- Direct Chat
+	{6, true, true} //--- System Chat
+};
+
+#include "CfgRemoteExec.hpp"
+#include "dialog\MasterHandler.hpp"
+#include "config\Config_Master.hpp"
+//#include "core\autosave\AutoSave_Master.hpp"
+#include "core\admin\debug_console.hpp"
+
+class CfgServer {
+	DatabaseName = "corgilife"; //Config name that'll be grep in the extdb-conf.ini.
+	DebugMode = 0; //Enable many server/hc debugging logs. Default: 0 (1 = Enabled / 0 = Disabled)
+	HeadlessSupport = 0; //Enable/Disable Headless client support. Default: 1 (1 = Enabled / 0 = Disabled)
+	/*
+	Enabled: When HeadlessSupport is set to 1 (enabled), the server will run without fault when no Headless Client is connected. However, it will support the Headless Client if you choose to connect one.
+	Disabled: If HeadlessSupport is set to 0 (disabled), the connection of a Headless Client will make no difference. This option will increase server performance a TINY but negligible amount.
+	*/
+};
+
+#include "maverick\maverick_master.cpp"
+
+class RscTitles {
+	#include "maverick\maverick_titles_master.cpp"
+	#include "maverick\introcam\dialogs\title_status.hpp"
+	#include "maverick\tuning\dialogs\titles.hpp"
+	#include "maverick\plane_taxis\titles.cpp"
+//	#include "dialog\statusBar.hpp"
+	#include "dialog\statusBarOld.hpp"
+	#include "dialog\progress.hpp"
+	#include "dialog\hud_nameTags.hpp"
+	#include "dialog\hud_stats.hpp"
+	#include "maverick\talent-tree-modular\gui\_masterTitles.cpp"
+	#include "gui\includeTitles.h"
+};
+
+class CfgFunctions {
+	#include "maverick\maverick_functions_master.cpp"
+	#include "Functions.hpp"
+};
+
+class CfgSounds {
+	sounds[] = {};
+	class SirenLong {
+		name = "SirenLong";
+		sound[] = {"\sounds\Siren_Long.ogg", 1.0, 1};
+		titles[] = {};
+	};
+
+	class medicSiren {
+		name = "medicSiren";
+		sound[] = {"\sounds\medic_siren.ogg", 1.0, 1};
+		titles[] = {};
+	};
+
+	class flashbang {
+		name = "flashbang";
+		sound[] = {"\sounds\flashbang.ogg", 1.0, 1};
+		titles[] = {};
+	};
+
+	class mining {
+		name = "mining";
+		sound[] = {"\sounds\mining.ogg", 2.0, 1};
+		titles[] = {};
+	};
+
+	class cutting {
+		name = "cutting";
+		sound[] = {"\sounds\cutting.ogg", 2.0, 1};
+		titles[] = {};
+	};
+
+	class harvest {
+		name = "harvest";
+		sound[] = {"\sounds\harvest.ogg", 2.0, 1};
+		titles[] = {};
+	};
+
+	class Yelp {
+		name = "yelp";
+		sound[] = {"\sounds\Yelp.ogg", 1.0, 1};
+		titles[] = {};
+	};
+
+	class LockCarSound {
+		name = "LockCarSound";
+		sound[] = {"\sounds\car_lock.ogg", 0.75, 1};
+		titles[] = {};
+	};
+
+	class UnlockCarSound {
+		name = "UnlockCarSound";
+		sound[] = {"\sounds\car_unlock.ogg", 0.75, 1};
+		titles[] = {};
+	};
+
+	class tazerSound {
+		name = "tazerSound";
+		sound[] = {"\sounds\tazerSound.ogg", 1.0, 1};
+		titles[] = {};
+	};
+
+	class handcuffs {
+		name = "handcuffs";
+		sound[] = {"\sounds\handcuffs.ogg", 1.0, 1};
+		titles[] = {};
+	};
+
+	class empwarn {
+		name = "empwarn";
+		sound[] = {"\sounds\empwarn.ogg", 2.0, 1};
+		titles[] = {};
+	};
+
+	class empacsound {
+		name = "empacsound";
+		sound[] = {"\sounds\empac.ogg", db-5, 1};
+		titles[] = {};
+	};
+
+	class car_alarm {
+		name = "car_alarm";
+		sound[] = {"\sounds\car_alarm.ogg", 1.0, 1};
+		titles[] = {};
+	};
+
+	class Zipties {
+		name = "Zipties";
+		sound[] = {"\sounds\Zipties.ogg", 1.0, 1};
+		titles[] = {};
+	};
+
+	class AllahuAkbar {
+		name = "AllahuAkbar";
+		sound[] = {"\sounds\AllahuAkbar.ogg", 1.0, 1};
+		titles[] = {};
+	};
+
+	class omnomnom {
+		name = "omnomnom";
+		sound[] = {"\sounds\omnomnom.ogg", 1.0, 1};
+		titles[] = {};
+	};
+
+	class drink {
+		name = "drink";
+		sound[] = {"\sounds\drink.ogg", 1.0, 1};
+		titles[] = {};
+	};
+
+	class alert {
+		name = "alert";
+		sound[] = {"\sounds\alert.ogg", 1.0, 1};
+		titles[] = {};
+	};
+
+	class buy {
+		name = "buy";
+		sound[] = {"\sounds\buy.ogg", 1.0, 1};
+		titles[] = {};
+	};
+
+	class slot_spin {
+		name = "slot_spin";
+		sound[] = {"\sounds\slot_spin.ogg", 1.0, 1};
+		titles[] = {1, ""};
+	};
+	
+	class slot_payoff {
+		name = "slot_payoff";
+		sound[] = {"\sounds\slot_payoff.ogg", 1.0, 1};
+		titles[] = {1, ""};
+	};
+	
+	class caching {
+		name = "caching";
+		sound[] = {"\sounds\caching.ogg", 1.0, 1};
+		titles[] = {};
+	};
+
+	class coughing {
+		name = "coughing"; 
+		sound[] = {"\sounds\coughing.ogg", 1.0, 1};
+		titles[] = {};
+	};
+
+	class diver {
+		name = "diver"; 
+		sound[] = {"\sounds\diver.ogg", 1.0, 1};
+		titles[] = {};
+	};
+
+	class seatBelt {
+		name = "seatBelt"; 
+		sound[] = {"\sounds\seatBelt.ogg", 1.0, 1};
+		titles[] = {};
+	};
+
+	class airplane {
+		name = "airplane"; 
+		sound[] = {"\sounds\airplane.ogg", 1.0, 1};
+		titles[] = {};
+	};
+
+	class patdown {
+		name = "patdown";
+		sound[] = {"\sounds\patdown.ogg", 1.0, 1};
+		titles[] = {};
+	};
+
+	class bombarm {
+		name = "bombarm";
+		sound[] = {"\sounds\bombarm.ogg", 1.0, 1};
+		titles[] = {};
+	};
+};
+
+class CfgDebriefing {
+	class NotWhitelisted {
+		title = "Mission Failed";
+		subtitle = "You are not whitelisted to use this slot";
+		description = "You are not allowed to use this slot because you do not have the appropriate permissions, try another slot.";
+		pictureBackground = "";
+		picture = "";
+		pictureColor[] = {0,0.3,0.6,1};
+	};
+
+	class NotSetup {
+		title = "Unavailable Slot";
+		subtitle = "You picked a slot that is in development!";
+		description = "This slot will be available soon! Watch the patch notes!";
+		pictureBackground = "";
+		picture = "";
+		pictureColor[] = {0,0.3,0.6,1};
+	};
+
+	class Blacklisted {
+		title = "Mission Failed";
+		subtitle = "You are blacklisted from the APD.";
+		description = "You are not allowed to be a cop due to previous actions. The Admins have removed you from being a cop.";
+		pictureBackground = "";
+		picture = "";
+		pictureColor[] = {0,0.3,0.6,1};
+	};
+
+	class GoodBye {
+		title = "Data Sync Successful";
+		subTitle = "You have successfully synced your data with the server.";
+		description = "Thank you for joining us on Corgi Life! Come back soon!";
+		pictureBackground = "textures\inlogo.paa";
+		picture = "";
+		pictureColor[] = {0,0.3,0.6,1};
+	};
+
+	class WrongMods {
+		title = "Incorrect / Outdated Mods Installed";
+		subTitle = "You have incorrect or outdated mods installed for this server.";
+		description = "Please visit our website for information regarding the mods: CorgiLife.co.uk";
+		pictureBackground = "textures\inlogo.paa";
+		picture = "";
+		pictureColor[] = {0,0.3,0.6,1};
+	};
+
+	class ScriptKiddie {
+		title = "Script Kiddie Detected";
+		subTitle = "No script kiddies allowed!";
+		description = "Have a nice day, noob!";
+		pictureBackground = "textures\inlogo.paa";
+		picture = "";
+		pictureColor[] = {0,0.3,0.6,1};
+	};
+/*
+	class NoSideChat {
+		title = "Do not use side chat!";
+		subTitle = "You have been kicked for using side chat.";
+		description = "Thank you for joining us on Corgi Life! Come back soon!";
+		pictureBackground = "textures\inlogo.paa";
+		picture = "";
+		pictureColor[] = {0,0.3,0.6,1};
+	};
+*/
+};
+
+class CfgNotifications {
+	class MedicalRequestEmerg {
+		title = "EMS Requested";
+		iconPicture = "\A3\ui_f\data\map\mapcontrol\taskIcon_ca.paa";
+		description = "%1";
+		duration = 5;
+		priority = 7;
+	};
+
+	class DeliveryAssigned {
+		title = "Delivery Job Accepted";
+		iconPicture = "\A3\ui_f\data\map\mapcontrol\taskIcon_ca.paa";
+		description = "%1";
+		duration = 10;
+		priority = 7;
+	};
+
+	class DeliveryFailed {
+		title = "Delivery Job Failed";
+		iconPicture = "\A3\ui_f\data\map\mapcontrol\taskiconfailed_ca.paa";
+		description = "%1";
+		duration = 7;
+		priority = 7;
+	};
+
+	class DeliverySucceeded {
+		title = "Delivery Job Completed";
+		iconPicture = "\A3\ui_f\data\map\mapcontrol\taskIcondone_ca.paa";
+		description = "%1";
+		duration = 6;
+		priority = 6;
+	};
+
+	class TextMessage {
+		title = "Received A Text Message";
+		iconPicture = "icons\ico_messageNew.paa";
+		description = "%1";
+		duration = 10;
+		priority = 6;
+	};
+
+	class PoliceDispatch {
+		title = "911 Dispatch Center";
+		iconPicture = "icons\ico_messagePolice.paa";
+		description = "%1";
+		duration = 10;
+		priority = 6;
+	};
+
+	class AdminDispatch {
+		title = "Admin Dispatch Center";
+		iconPicture = "icons\ico_messageAdmin.paa";
+		description = "%1";
+		duration = 10;
+		priority = 6;
+	};
+
+	class AdminMessage {
+		title = "Admin Message";
+		iconPicture = "icons\ico_messageAdmin.paa";
+		description = "%1";
+		duration = 10;
+		priority = 5;
+	};
+};
